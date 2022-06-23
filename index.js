@@ -45,7 +45,10 @@ function createWindow (){
              preload:path.join(__dirname, 'main.js')
              
            },
-        fullscreen:true   
+           autoHideMenuBar: true,
+           fullscreen:true,
+           alwaysOnTop: true
+
     })
     win.loadFile('index.html')
     const mainMenu = Menu.buildFromTemplate(templateMenu);
@@ -87,7 +90,9 @@ function loginWindow(){
         webPreferences: {
             preload:path.join(__dirname, 'login.js')
         },
-        fullscreen:true   
+        autoHideMenuBar: true,
+        // fullscreen:true,
+        // alwaysOnTop: true  la deja sin cerrar 
 
     })
 
@@ -109,11 +114,14 @@ ipcMain.handle('login', (event, obj) => {
 
 function validatelogin(obj){
     const { codigo } = obj
+
     const sql = "SELECT *FROM uadmin WHERE codigo=? "
+
      db.query(sql, [codigo], (error, results, fields) => {
          if(error){console.log(error);}
 
          if(results.length > 0 ){ 
+            add_r(obj)
             AWindow()
             Awin.show() 
             winlogin.close()            
@@ -125,6 +133,14 @@ function validatelogin(obj){
              }).show()
          }
      }); 
+}
+
+function add_r(obj){
+    const {codigo} = obj
+  
+   
+    db.query("insert into register values (null," + codigo + "," + "'2021-09-15','11:55:00')");
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -156,7 +172,9 @@ function SWindow () {
         webPreferences: {
             preload:path.join(__dirname, 'Usuario.js')
         },
-        fullscreen:true   
+        autoHideMenuBar: true,
+        fullscreen:true,
+        // alwaysOnTop: true  
 
     })
   Swin.loadFile('Usuario.html')
@@ -180,6 +198,7 @@ function validateloginS(obj){
          if(error){console.log(error);}
 
          if(results.length > 0 ){ 
+            add_r(obj)
             ASWindow()
             ASwin.show() 
             Swin.close()            
